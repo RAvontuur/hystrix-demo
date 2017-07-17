@@ -41,35 +41,38 @@ public class Application {
     }
 
     private static void successfulCalls(int n) {
+        int sleep = 20;
         for (int i = 0; i < n; i++) {
             try {
-                Thread.sleep(20l);
+                Thread.sleep(sleep);
                 myServiceClient.callService(i, 1);
             } catch (Exception e) {
-                LOGGER.error("EXCEPTION {} {}", i, e.getMessage());
+                LOGGER.error("EXCEPTION call {}, every 20 ms {}", i, e.getMessage());
             }
         }
     }
 
     private static void timeoutCalls(int n) {
         // these calls should cause a timeout
+        int sleep = 30000;
         for (int i = 0; i < n; i++) {
             try {
-                myServiceClient.callService(i, 2000);
+                myServiceClient.callService(i, sleep);
             } catch (Exception e) {
-                LOGGER.error("EXCEPTION {} {}", i, e.getMessage());
+                LOGGER.error("EXCEPTION call {}, sleep {} ms {}", i, sleep, e.getMessage());
             }
         }
     }
 
     private static void failingCalls(int n) {
         // failing calls
+        int sleep = 20;
         for (int i = 1000000; i < 1000000 + n; i++) {
             try {
-                Thread.sleep(20l);
+                Thread.sleep(sleep);
                 myServiceClient.callService(i, 100);
             } catch (Exception e) {
-                LOGGER.error("EXCEPTION {} {}", i, e.getMessage());
+                LOGGER.error("EXCEPTION call {}, every 20 ms, sleep 100 ms {}", i, e.getMessage());
             }
         }
     }

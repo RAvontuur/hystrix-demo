@@ -49,15 +49,22 @@ public class ApplicationMultiThreaded {
 
         ExecutorService executor = Executors.newFixedThreadPool(100);
 
-        Runnable runnableSlow = () -> {
-            // slow call
-            makeCall(counter1.getAndIncrement(), 400);
-        };
-
         Runnable runnableFast = () -> {
             // fast call
-            fastServiceClient.callService(counter2.getAndIncrement());
+            fastServiceClient.callService(counter1.getAndIncrement());
         };
+
+
+        Runnable runnableSlow = () -> {
+            // slow call
+            int i = counter2.getAndIncrement();
+            try {
+                myServiceClient.callService(i, 400);
+            } catch (Exception e) {
+                LOGGER.error("EXCEPTION {} {}", i, e.getMessage());
+            }
+        };
+
 
         final long startTime = System.currentTimeMillis();
 
@@ -66,6 +73,8 @@ public class ApplicationMultiThreaded {
             if (counter3.getAndIncrement() % 10 == 1) {
                 float rate = 1000F / sleeptime;
                 LOGGER.info("counter :" + counter3.get() + " request-rate :" + rate + " /s");
+                LOGGER.info("fast service is lagging behind " + (counter3.get() - counter1.get()) + " requests");
+                LOGGER.info("slow service is lagging behind " + (counter3.get() - counter2.get()) + " requests");
             }
 
             Thread.sleep(sleeptime);
@@ -87,13 +96,5 @@ public class ApplicationMultiThreaded {
         }
 
         return c;
-    }
-
-    private static void makeCall(int i, int sleep) {
-        try {
-            myServiceClient.callService(i, sleep);
-        } catch (Exception e) {
-            LOGGER.error("EXCEPTION {} {}", i, e.getMessage());
-        }
     }
 }
