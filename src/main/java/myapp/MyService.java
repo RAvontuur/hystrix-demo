@@ -21,7 +21,7 @@ public class MyService {
         }
 
         MyResult myResult = new MyResult();
-        myResult.setResult("my-service-" + id);
+        myResult.setResult("my-service-" + id + "   sleep:" + sleep);
 
         LOGGER.info(myResult.getResult());
 

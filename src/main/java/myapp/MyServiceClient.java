@@ -14,11 +14,11 @@ public class MyServiceClient {
     private MyService myRemoteService;
 
     @HystrixCommand(
-            fallbackMethod = "fallback",
+            //fallbackMethod = "fallback",
             commandProperties = {
                     @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "500")
             })
-    public MyResult callRemoteService(long id, long sleep) {
+    public MyResult callService(long id, long sleep) {
         return myRemoteService.retrieveResult(id, sleep);
     }
 

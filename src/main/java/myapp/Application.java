@@ -44,7 +44,7 @@ public class Application {
         for (int i = 0; i < n; i++) {
             try {
                 Thread.sleep(20l);
-                myServiceClient.callRemoteService(i, 1);
+                myServiceClient.callService(i, 1);
             } catch (Exception e) {
                 LOGGER.error("EXCEPTION {} {}", i, e.getMessage());
             }
@@ -55,7 +55,7 @@ public class Application {
         // these calls should cause a timeout
         for (int i = 0; i < n; i++) {
             try {
-                myServiceClient.callRemoteService(i, 2000);
+                myServiceClient.callService(i, 2000);
             } catch (Exception e) {
                 LOGGER.error("EXCEPTION {} {}", i, e.getMessage());
             }
@@ -67,7 +67,7 @@ public class Application {
         for (int i = 1000000; i < 1000000 + n; i++) {
             try {
                 Thread.sleep(20l);
-                myServiceClient.callRemoteService(i, 100);
+                myServiceClient.callService(i, 100);
             } catch (Exception e) {
                 LOGGER.error("EXCEPTION {} {}", i, e.getMessage());
             }
