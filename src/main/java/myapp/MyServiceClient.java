@@ -14,7 +14,7 @@ public class MyServiceClient {
     private MyService myService;
 
     @HystrixCommand(
-            fallbackMethod = "fallback",
+            //fallbackMethod = "fallback",
             commandProperties = {
                     @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "500")
             })
