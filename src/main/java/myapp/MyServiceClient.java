@@ -16,7 +16,12 @@ public class MyServiceClient {
     @HystrixCommand(
             //fallbackMethod = "fallback",
             commandProperties = {
-                    @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "500")
+                    @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "10000")
+            },
+            threadPoolProperties = {
+                    @HystrixProperty(name = "coreSize", value = "1"),
+                    @HystrixProperty(name = "maxQueueSize", value = "101"),
+                    @HystrixProperty(name = "queueSizeRejectionThreshold", value = "98")
             })
     public MyResult callService(long id, long sleep) {
         return myService.retrieveResult(id, sleep);

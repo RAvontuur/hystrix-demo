@@ -44,7 +44,9 @@ public class ApplicationMultiThreaded {
         fastServiceClient = context.getBean(FastServiceClient.class);
 
         final AtomicInteger counter1 = new AtomicInteger(1);
+        final AtomicInteger counter1b = new AtomicInteger(1);
         final AtomicInteger counter2 = new AtomicInteger(1);
+        final AtomicInteger counter2b = new AtomicInteger(1);
         final AtomicInteger counter3 = new AtomicInteger(1);
 
         ExecutorService executor = Executors.newFixedThreadPool(100);
@@ -52,6 +54,7 @@ public class ApplicationMultiThreaded {
         Runnable runnableFast = () -> {
             // fast call
             fastServiceClient.callService(counter1.getAndIncrement());
+            counter1b.getAndIncrement();
         };
 
 
@@ -63,6 +66,7 @@ public class ApplicationMultiThreaded {
             } catch (Exception e) {
                 LOGGER.error("EXCEPTION {} {}", i, e.getMessage());
             }
+            counter2b.getAndIncrement();
         };
 
 
@@ -73,8 +77,8 @@ public class ApplicationMultiThreaded {
             if (counter3.getAndIncrement() % 10 == 1) {
                 float rate = 1000F / sleeptime;
                 LOGGER.info("counter :" + counter3.get() + " request-rate :" + rate + " /s");
-                LOGGER.info("fast service is lagging behind " + (counter3.get() - counter1.get()) + " requests");
-                LOGGER.info("slow service is lagging behind " + (counter3.get() - counter2.get()) + " requests");
+                LOGGER.info("fast service is lagging behind " + (counter3.get() - counter1.get()) + " requests, queued " + (counter1.get() - counter1b.get()));
+                LOGGER.info("slow service is lagging behind " + (counter3.get() - counter2.get()) + " requests, queued " + (counter2.get() - counter2b.get()));
             }
 
             Thread.sleep(sleeptime);

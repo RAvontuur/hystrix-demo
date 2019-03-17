@@ -5,6 +5,13 @@ package myapp;
  */
 public class MyResult {
 
+    public MyResult() {
+    }
+
+    public MyResult(String result) {
+        this.result = result;
+    }
+
     private String result;
 
 
